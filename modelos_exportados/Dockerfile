@@ -6,11 +6,8 @@ WORKDIR /app
 
 # Copiar código y modelos
 COPY app.py .
-COPY modelo_ann/modelo.py modelo_ann/modelo.py
-COPY modelo_ann/modelo_ann.pkl modelo_ann/modelo_ann.pkl
-COPY modelo_ml/modelo_xgb.pkl modelo_ml/modelo_xgb.pkl
-COPY standardscaler_datos_entrada.pkl .
-COPY standardscaler_precio.pkl .
+COPY modelo_ann/ modelo_ann/
+COPY modelo_ml/ modelo_ml/
 COPY requirements.txt .
 
 
