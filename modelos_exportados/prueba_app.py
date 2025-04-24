@@ -1,9 +1,9 @@
 import requests
 
 input_data = {
-    "Habitaciones": 2,
-    "Aseos": 3,
-    "Metros": 85,
+    "Habitaciones": 3,
+    "Aseos": 2,
+    "Metros": 105,
     "CUDIS": 2408907,
     "Población": 120000,
     "Renta bruta media por persona": 36000,

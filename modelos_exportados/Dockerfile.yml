@@ -12,14 +12,14 @@ COPY requirements.txt .
 
 
 # Instalar dependencias del sistema necesarias
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libffi-dev \
-    && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y \
+#    build-essential \
+#    libffi-dev \
+#    && rm -rf /var/lib/apt/lists/*
 
 
 # Paso para evitar errores con compilación de numpy y otros
-RUN pip install --upgrade pip setuptools wheel
+#RUN pip install --upgrade pip setuptools wheel
 
 
 # Instalar dependencias necesarias
