@@ -1,5 +1,7 @@
 import requests
 
+# Prueba de la API local con el modelo de XGBoost y ANN exportados
+# Se asume que el servidor FastAPI está corriendo en localhost:8000
 input_data = {
     "Habitaciones": 3,
     "Aseos": 2,
@@ -21,3 +23,17 @@ print(r.json())
 r = requests.post("http://localhost:8000/predict_ann", json=input_data)
 print(r.json())
 
+
+# Prueba de la API en AWS para mandar los datos desde el Power BI
+# Se asume que el servidor FastAPI está corriendo en AWS
+input_data = {
+    "habitaciones": 3,
+    "aseos": 1,
+    "metros": 105,
+    "comodidades": ["TERRAZA","PISCINA", "GARAJE"],
+    "vivienda": "PISO",
+    "CUDIS": 2400802
+}
+
+r = requests.post("https://cr88hyf292.execute-api.eu-west-3.amazonaws.com/v1/predict", json=input_data)
+print(r.json())
