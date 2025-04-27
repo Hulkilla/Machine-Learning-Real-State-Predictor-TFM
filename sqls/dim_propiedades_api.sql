@@ -6,4 +6,3 @@ CREATE TABLE dim_propiedades_api (
     Metros INTEGER,
     Comodidades TEXT
 );
-

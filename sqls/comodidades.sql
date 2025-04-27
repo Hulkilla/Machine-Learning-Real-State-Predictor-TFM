@@ -6,11 +6,12 @@ CREATE TABLE Comodidades (
 );
 INSERT INTO Comodidades ("Terraza", "Garaje", "Piscina", "Comodidades")
 VALUES
-    ('Sí', 'Sí', 'Sí', '[TERRAZA, GARAJE, PISCINA]'),
-    ('No', 'Sí', 'Sí', '[GARAJE, PISCINA]'),
-    ('Sí', 'No', 'Sí', '[TERRAZA, PISCINA]'),
-    ('No', 'No', 'Sí', '[PISCINA]'),
-    ('Sí', 'Sí', 'No', '[TERRAZA, GARAJE]'),
-    ('No', 'Sí', 'No', '[GARAJE]'),
-    ('Sí', 'No', 'No', '[TERRAZA]'),
-    ('No', 'No', 'No', '[]');
+    ('Sí', 'Sí', 'Sí', 'TERRAZA, GARAJE, PISCINA'),
+    ('No', 'Sí', 'Sí', 'GARAJE, PISCINA'),
+    ('Sí', 'No', 'Sí', 'TERRAZA, PISCINA'),
+    ('No', 'No', 'Sí', 'PISCINA'),
+    ('Sí', 'Sí', 'No', 'TERRAZA, GARAJE'),
+    ('No', 'Sí', 'No', 'GARAJE'),
+    ('Sí', 'No', 'No', 'TERRAZA'),
+    ('No', 'No', 'No', '');
+
