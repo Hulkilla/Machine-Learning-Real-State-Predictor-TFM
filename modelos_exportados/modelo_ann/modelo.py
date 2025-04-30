@@ -2,6 +2,7 @@
 import torch
 import torch.nn as nn
 
+
 class MLP(nn.Module):
     def __init__(self, input_size):
         super(MLP, self).__init__()
@@ -25,4 +26,3 @@ class MLP(nn.Module):
         x = torch.nn.functional.leaky_relu(self.bn3(self.hidden3(x)))
         x = self.output(x)
         return x
-

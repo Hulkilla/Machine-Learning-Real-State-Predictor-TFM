@@ -1,0 +1,21 @@
+name: Black
+
+on: push
+
+jobs:
+  black:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repo content
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      - name: setup requirements
+        run: pip install black==22.10.0
+
+      - name: Run Black
+        run: black . --check --diff --color --exclude venv --line-length 79 --target-version py38 --skip-string-normalization --verbose 

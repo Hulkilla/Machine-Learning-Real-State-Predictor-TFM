@@ -22,19 +22,30 @@ app = Flask(__name__)
 
 # Función ANN
 def predecir_precio_ann(input_dict, scaler_x, scaler_y, model):
-    column_order = ['Habitaciones', 'Aseos', 'Metros', 'CUDIS',
-                    'Población', 'Renta bruta media por persona',
-                    'Comodidades', 'Capital', 'Precio_medio_mun_tipo']
+    column_order = [
+        'Habitaciones',
+        'Aseos',
+        'Metros',
+        'CUDIS',
+        'Población',
+        'Renta bruta media por persona',
+        'Comodidades',
+        'Capital',
+        'Precio_medio_mun_tipo',
+    ]
 
-
-    input_dict['Precio_medio_mun_tipo'] = log(input_dict['Precio_medio_mun_tipo'])
+    input_dict['Precio_medio_mun_tipo'] = log(
+        input_dict['Precio_medio_mun_tipo']
+    )
 
     features_to_scale = [feat for feat in column_order if feat != 'Capital']
     X_input_to_scale = DataFrame([input_dict], columns=features_to_scale)
 
     X_scaled = scaler_x.transform(X_input_to_scale)
     capital_index = column_order.index('Capital')
-    X_with_capital = insert(X_scaled, capital_index, input_dict['Capital'], axis=1)
+    X_with_capital = insert(
+        X_scaled, capital_index, input_dict['Capital'], axis=1
+    )
 
     X_tensor = tensor(X_with_capital, dtype=float32)
 
@@ -42,7 +53,9 @@ def predecir_precio_ann(input_dict, scaler_x, scaler_y, model):
     with no_grad():
         y_pred_scaled = model(X_tensor).numpy().ravel()
 
-    y_pred_log = scaler_y.inverse_transform(y_pred_scaled.reshape(-1, 1)).ravel()
+    y_pred_log = scaler_y.inverse_transform(
+        y_pred_scaled.reshape(-1, 1)
+    ).ravel()
     y_pred_euros = exp(y_pred_log)[0]
 
     return y_pred_euros
@@ -50,11 +63,20 @@ def predecir_precio_ann(input_dict, scaler_x, scaler_y, model):
 
 # Función XGBoost
 def predecir_precio_xgb(input_dict, scaler_x, scaler_y, model):
-    column_order = ['Habitaciones', 'Aseos', 'Metros', 'CUDIS', 'Población',
-                    'Renta bruta media por persona', 'Comodidades',
-                    'Precio_medio_mun_tipo']
+    column_order = [
+        'Habitaciones',
+        'Aseos',
+        'Metros',
+        'CUDIS',
+        'Población',
+        'Renta bruta media por persona',
+        'Comodidades',
+        'Precio_medio_mun_tipo',
+    ]
 
-    input_dict['Precio_medio_mun_tipo'] = log(input_dict['Precio_medio_mun_tipo'])
+    input_dict['Precio_medio_mun_tipo'] = log(
+        input_dict['Precio_medio_mun_tipo']
+    )
 
     features_to_scale = [feat for feat in column_order if feat != 'Capital']
     X_input_to_scale = DataFrame([input_dict], columns=features_to_scale)
@@ -73,18 +95,22 @@ def predecir_precio_xgb(input_dict, scaler_x, scaler_y, model):
 def predict_xgb():
     input_data = request.get_json()
     try:
-        pred = predecir_precio_xgb(input_data, scaler_entrada_xgb, scaler_precio_xgb, modelo_xgb)
+        pred = predecir_precio_xgb(
+            input_data, scaler_entrada_xgb, scaler_precio_xgb, modelo_xgb
+        )
         return jsonify({"prediccion_xgb": float(pred)})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-    
+
 
 # Endpoint de predicción con ANN
 @app.route("/predict_ann", methods=["POST"])
 def predict_ann():
     input_data = request.get_json()
     try:
-        pred = predecir_precio_ann(input_data, scaler_entrada_ann, scaler_precio_ann, modelo_ann)
+        pred = predecir_precio_ann(
+            input_data, scaler_entrada_ann, scaler_precio_ann, modelo_ann
+        )
         return jsonify({"prediccion_ann": float(pred)})
 
     except Exception as e:
