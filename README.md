@@ -1,6 +1,6 @@
 # Proyecto TFM: Predictor de Precios de Viviendas en Castilla y León con Machine Learning
 
-Predicción precisa para decisiones informadas en el mercado inmobiliario de CyL
+Predicción para decisiones informadas en el mercado inmobiliario de Castilla y León (España).
 
 ## Descripción
 Este proyecto tiene como objetivo predecir el precio de venta de viviendas en la comunidad autónoma de Castilla y León mediante el uso de técnicas de Machine Learning. La predicción precisa del precio de las propiedades es de gran importancia para el mercado inmobiliario local, ya que puede ayudar a compradores, vendedores, agencias y entidades financieras a tomar decisiones más informadas.
@@ -183,7 +183,7 @@ Las tablas se generan directamente en la base de datos cuando se ejecutan los no
 - **Persistencia de modelos**:  
   `joblib`
 
-### Backend y Base de Datos
+### Base de Datos
 - **PostgreSQL**: Gestión de la base de datos relacional
 - **Python dotenv**: Gestión segura de credenciales con `.env`
 - **Scripts personalizados**: `conexion.py` con funciones auxiliares para conectar, evaluar y visualizar modelos
