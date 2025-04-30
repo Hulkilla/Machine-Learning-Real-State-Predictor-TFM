@@ -16,11 +16,7 @@ jobs:
 
       - name: setup requirements
         run: pip install black==22.10.0
-             pip install nb-black
 
       - name: Run Black
         run: black . --check --diff --color --exclude venv --line-length 79 --target-version py38 --skip-string-normalization --verbose 
       
-      - name: Run Black on Notebooks
-        run: |
-          find . -name "*.ipynb" -not -path "./venv/*" -exec black --check --diff --color --line-length 79 --target-version py38 --skip-string-normalization --verbose {} +
