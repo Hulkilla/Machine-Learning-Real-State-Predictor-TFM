@@ -4,7 +4,7 @@ on: push
 
 jobs:
   black:
-    runs-on: ubuntu-latest
+    runs-on:  ubuntu-latest
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v2
@@ -12,35 +12,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          pip install black==22.10.0
-          pip install nbformat
+      - name: setup requirements
+        run: pip install black==22.10.0
+             pip install nb-black
 
-      - name: Run Black on Python files
-        run: black . --check --diff --color --exclude venv --line-length 79 --target-version py38 --skip-string-normalization --verbose
-
+      - name: Run Black
+        run: black . --check --diff --color --exclude venv --line-length 79 --target-version py38 --skip-string-normalization --verbose 
+      
       - name: Run Black on Notebooks
         run: |
-          python - <<EOF
-          import nbformat
-          import subprocess
-          from pathlib import Path
-
-          for notebook in Path(".").rglob("*.ipynb"):
-              if "venv" not in str(notebook):
-                  with open(notebook, "r", encoding="utf-8") as f:
-                      nb = nbformat.read(f, as_version=4)
-                  for cell in nb.cells:
-                      if cell.cell_type == "code":
-                          cell.source = subprocess.run(
-                              ["black", "--line-length", "79", "--target-version", "py38", "-"],
-                              input=cell.source.encode("utf-8"),
-                              capture_output=True,
-                              text=True,
-                          ).stdout
-                  with open(notebook, "w", encoding="utf-8") as f:
-                      nbformat.write(nb, f)
-          EOF
+          find . -name "*.ipynb" -not -path "./venv/*" -exec black --check --diff --color --line-length 79 --target-version py38 --skip-string-normalization --verbose {} +
