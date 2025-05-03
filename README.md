@@ -24,6 +24,10 @@ Se ha preparado un conjunto de datos limpio y estructurado que sirve como entrad
 
 La API permite realizar predicciones en tiempo real a partir de nuevos datos de viviendas, facilitando la integración en entornos externos.
 
+A continuación, se muestra un diagrama que ilustra la arquitectura de implementación del proyecto:
+
+![Diagrama de Implementación](imagenes/diagrama_implementacion.png)
+
 Se ha conectado Microsoft Power BI a la API de AWS, permitiendo:
 - La creación de paneles dinámicos e interactivos.
 - La visualización del proceso de predicción de precios.
