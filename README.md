@@ -199,9 +199,23 @@ Las tablas se generan directamente en la base de datos cuando se ejecutan los no
 
 ### Infraestructura y Despliegue
 - **Amazon Web Services (AWS)**:  
-  - S3 (almacenamiento de datos)
-  - API Gateway + Lambda para predicción vía API
-- **Docker**: Contenerización de la API de predicción
+  - `S3 (almacenamiento de datos)`
+  - `API Gateway`
+  - `Lambda`
+  - `EC2`
+  - `Cloud Watch`
+  - `VPC`
+  - `IAM`
+  - `DynamoDB`
+  - `Instance Connect`
+  - `Cloudshell`
+- **Docker**: 
+```bash
+docker pull hulkilla/tfm-images
+docker run -p 8000:8000 hulkilla/tfm-images
+```
+- **Python**:
+  - `Flask API`
 
 ### Visualización y Reporting
 - **Microsoft Power BI**: Visualización conectada en tiempo real a la API para mostrar resultados dinámicos
