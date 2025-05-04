@@ -35,27 +35,27 @@ Se ha conectado Microsoft Power BI a la API de AWS, permitiendo:
 ## Estructura del Proyecto 
 
 ```bash                 
-├── 00_Conexion_BBDD.ipynb                  # Conexión a la base de datos desde notebooks
-├── 01_datos_viviendas_CyL.ipynb            # Limpieza inicial del dataset principal
-├── 02_datos_municipios_Zamora.ipynb        # Procesamiento de municipios de Zamora
-├── 03_datos_municipios.ipynb               # Procesamiento de todos los municipios de CyL
-├── 04_EDA.ipynb                            # Análisis exploratorio de datos
-├── 05_Machine_Learning.ipynb               # Entrenamiento y evaluación de modelos ML
-├── 05.5_prueba_XGB_exportado.ipynb         # Carga y prueba del modelo XGBoost exportado
-├── 06_ANN.ipynb                            # Entrenamiento de red neuronal artificial (ANN)
-├── 06.5_prueba_ANN_exportado.ipynb         # Evaluación del modelo ANN exportado
-├── 07_carga_datos_S3.ipynb                 # Carga de datos a AWS S3
-├── 07.5_carga_datos_api.ipynb              # Envío de datos a API para conexión con Power BI
-├── conexion.py                             # Script auxiliar de conexión a la BBDD
-├── imagenes/                               # Carpeta de imágenes usadas en el README o informes
+├── 00_Conexion_BBDD.ipynb                      # Conexión a la base de datos desde notebooks
+├── 01_datos_viviendas_CyL.ipynb                # Limpieza inicial del dataset principal
+├── 02_datos_municipios_Zamora.ipynb            # Procesamiento de municipios de Zamora
+├── 03_datos_municipios.ipynb                   # Procesamiento de todos los municipios de CyL
+├── 04_EDA.ipynb                                # Análisis exploratorio de datos
+├── 05_Machine_Learning.ipynb                   # Entrenamiento y evaluación de modelos ML
+├── 05.5_prueba_XGB_exportado.ipynb             # Carga y prueba del modelo XGBoost exportado
+├── 06_ANN.ipynb                                # Entrenamiento de red neuronal artificial (ANN)
+├── 06.5_prueba_ANN_exportado.ipynb             # Evaluación del modelo ANN exportado
+├── 07_carga_datos_S3.ipynb                     # Carga de datos a AWS S3
+├── 07.5_carga_datos_api.ipynb                  # Envío de datos a API para conexión con Power BI
+├── conexion.py                                 # Script auxiliar de conexión a la BBDD
+├── imagenes/                                   # Carpeta de imágenes usadas en el README o informes
 │   ├── carga docker.png
 │   ├── carga S3.png
 │   ├── Correlacion.png
 │   └── prediccion_xgb.png
-├── mapas/                                  # Mapas interactivos generados en el proyecto
+├── mapas/                                      # Mapas interactivos generados en el proyecto
 │   ├── mapa_interactivo_castilla_leon.html
 │   └── mapa_interactivo_fast.html
-├── modelos_exportados/                     # API y modelos listos para despliegue
+├── modelos_exportados/                         # API y modelos listos para despliegue
 │   ├── app.py
 │   ├── Dockerfile
 │   ├── prueba_app.py
@@ -63,22 +63,26 @@ Se ha conectado Microsoft Power BI a la API de AWS, permitiendo:
 │   ├── .dockerignore
 │   ├── modelo_ann/
 │   └── modelo_ml/
-├── raw_data/                               # Datos originales y auxiliares
+├── AWS Lambdas/                                # Funciones Lambda para automatización y predicción
+│   ├── health_lambda/                          # Verificación del estado de la API
+│   ├── predict_price_lambda/                   # Predicción de precios de viviendas
+│   └── S3_triggered_CUDIS_table_filler_lambda/ # Actualización de DynamoDB desde S3
+├── raw_data/                                   # Datos originales y auxiliares
 │   ├── DatosViviendasCyL.csv
 │   ├── edades_cyl.xlsx
 │   ├── municipios/
 │   └── provincias/
-├── sqls/                                   # Scripts SQL usados en el proyecto
+├── sqls/                                       # Scripts SQL usados en el proyecto
 │   ├── comodidades.sql
 │   └── dim_propiedades_api.sql
-├── visualizacion/                          # Archivos de visualización (Power BI, imágenes institucionales)
+├── visualizacion/                              # Archivos de visualización (Power BI, imágenes institucionales)
 │   ├── Identificador+Junta+color.jpg
 │   └── visualizacion_tfm.pbix
-├── .env                                    # Variables de entorno (no compartido por seguridad)
-├── requirements.txt                        # Dependencias del proyecto
-├── indicadores.json                        # Indicadores clave del proyecto
-├── DatosVivendas1.csv                      # CSV inicial para la carga de datos
-└── README.md                               # Este archivo
+├── .env                                        # Variables de entorno (no compartido por seguridad)
+├── requirements.txt                            # Dependencias del proyecto
+├── indicadores.json                            # Indicadores clave del proyecto
+├── DatosVivendas1.csv                          # CSV inicial para la carga de datos
+└── README.md                                   # Este archivo
 ```
 
 ### Estructura y Contenido de los Notebooks
@@ -219,6 +223,55 @@ docker run -p 8000:8000 hulkilla/tfm-images
 
 ### Visualización y Reporting
 - **Microsoft Power BI**: Visualización conectada en tiempo real a la API para mostrar resultados dinámicos
+
+## AWS Lambdas
+
+En este proyecto se han implementado varias funciones Lambda para automatizar y gestionar diferentes procesos relacionados con el flujo de datos y las predicciones. A continuación, se describen las funciones Lambda utilizadas:
+
+### 1. **Health Lambda**
+- **Ubicación**: [`AWS Lambdas/health_Lambda/lambda_function.py`](AWS%20Lambdas/health_Lambda/lambda_function.py)
+- **Propósito**: 
+  - Verificar el estado de la API y los servicios asociados.
+  - Responder con un mensaje de estado para garantizar que los servicios están operativos.
+- **Entradas**: Ninguna.
+- **Salidas**: Mensaje de estado (`200 OK` o error).
+
+### 2. **Predict Price Lambda**
+- **Ubicación**: [`AWS Lambdas/predict_price_lambda/lambda_function.py`](AWS%20Lambdas/predict_price_lambda/lambda_function.py)
+- **Propósito**: 
+  - Recibir datos de entrada sobre una vivienda y devolver el precio estimado utilizando los modelos entrenados (XGBoost o ANN).
+- **Entradas**: 
+  - JSON con las características de la vivienda (por ejemplo, tamaño, ubicación, número de habitaciones, etc.).
+- **Salidas**: 
+  - Precio estimado de la vivienda en formato JSON.
+
+### 3. **S3 Triggered CUDIS Table Filler Lambda**
+- **Ubicación**: [`AWS Lambdas/S3_triggered_CUDIS_table_filler_lambda/lambda_function.py`](AWS%20Lambdas/S3_triggered_CUDIS_table_filler_lambda/lambda_function.py)
+- **Propósito**: 
+  - Automatizar la actualización de una tabla en DynamoDB cuando se detectan cambios en un bucket de S3.
+  - Procesar los datos cargados en S3 y almacenarlos en DynamoDB para su uso posterior.
+- **Entradas**: 
+  - Evento de S3 (archivo cargado, modificado o eliminado).
+- **Salidas**: 
+  - Actualización de la tabla en DynamoDB.
+
+### Arquitectura de las Lambdas
+
+Las funciones Lambda están integradas en la arquitectura general del proyecto y se comunican con otros servicios de AWS, como S3, DynamoDB y API Gateway. Tal y como se muestra en el diagrama expuesto más arriba.
+
+### Configuración de las Lambdas
+
+1. **Health Lambda**:
+   - Configurada para ejecutarse bajo demanda a través de API Gateway.
+   - No requiere permisos adicionales.
+
+2. **Predict Price Lambda**:
+   - Configurada para ejecutarse bajo demanda a través de API Gateway.
+   - Requiere acceso a los modelos exportados almacenados en S3.
+
+3. **S3 Triggered CUDIS Table Filler Lambda**:
+   - Configurada para ejecutarse automáticamente cuando se detectan eventos en un bucket de S3.
+   - Requiere permisos para leer datos de S3 y escribir en DynamoDB.
 
 
 ## Casos de Uso / Aplicaciones Prácticas
