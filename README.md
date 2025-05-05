@@ -26,7 +26,7 @@ La API permite realizar predicciones en tiempo real a partir de nuevos datos de 
 
 A continuación, se muestra un diagrama que ilustra la arquitectura de implementación del proyecto:
 
-![Diagrama de Implementación](imagenes/diagrama_implementacion.png)
+![Diagrama de Implementación](imagenes/TFMarinistico.png)
 
 Se ha conectado Microsoft Power BI a la API de AWS, permitiendo:
 - La creación de paneles dinámicos e interactivos.
