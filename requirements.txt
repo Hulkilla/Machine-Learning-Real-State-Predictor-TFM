@@ -54,7 +54,7 @@ packaging==25.0
 pandas==2.2.3
 parso==0.8.4
 pathspec==0.12.1
-pillow==11.2.1
+pillow==11.3.0
 platformdirs==4.3.7
 prompt_toolkit==3.0.51
 psutil==7.0.0
